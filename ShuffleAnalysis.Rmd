@@ -36,12 +36,13 @@ The first experiment will consist on generating decks with one two and three col
 
 ```{r}
 source('./decks.R')
+source('./shuffles.R')
 
 nHands <- 2000
 
-decks <- list(deck1 = generateDeck(c(1), 10:19),
-              deck2 = generateDeck(1:2, c(10:14, 20:24)),
-              deck3 = generateDeck(1:3, c(10:12, 20:22, 30:33)))
+decks <- list(deck1 = generateBasicDeck(c(1), 10:19),
+              deck2 = generateBasicDeck(1:2, c(10:14, 20:24)),
+              deck3 = generateBasicDeck(1:3, c(10:12, 20:22, 30:33)))
 
 shuffles <- list(random = shuffleRandom,
                  randomCuts = simpleRandomCuts(),

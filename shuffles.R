@@ -23,8 +23,30 @@ simpleRandomCuts <- function(min=20, max=40) {
   }
 }
 
-interleaved <- function(min=20, max=40) {
-  
+interleaved <- function(minCards=20, maxCards=40) {
+  function (deck, n = 40) {
+    result <- deck
+    
+    for(i in 1:n) {
+      points <- sort(ceiling(runif(2, -5, 5))) + c(minCards, maxCards)
+      firstHalf <- result[points[1]:points[2]]
+      secondHalf <- result[-(points[1]:points[2])]
+      separations <- rgeom(length(firstHalf), 0.4)
+      result <- c()
+      lastIndex <- 1
+      
+      for (j in 1:length(firstHalf)) {
+        newIndex <- lastIndex + separations[j]
+        result <- c(result, firstHalf[[j]], secondHalf[lastIndex:newIndex])
+        lastIndex <- newIndex + 1
+      }
+      
+      result <- na.omit(result)
+    }
+    
+    attributes(result) <- NULL
+    result
+  }
 }
 
 prepareDeck <- function(deck) {
