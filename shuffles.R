@@ -23,6 +23,10 @@ simpleRandomCuts <- function(min=20, max=40) {
   }
 }
 
+interleaved <- function(min=20, max=40) {
+  
+}
+
 prepareDeck <- function(deck) {
   lands <- deck[deck < 10]
   cards <- deck[deck >= 10]

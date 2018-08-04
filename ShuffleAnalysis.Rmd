@@ -13,6 +13,23 @@ library(tidyr)
 library(ggplot2)
 ```
 
+# Shuffle types
+
+## Truly Random
+
+GRAFICA DE ESTADÍSTICAS MEDIAS Y VARIANZAS SEGÚN EL NÚMERO DE MEZCLAS 
+
+
+## Random Cuts
+
+GRAFICA DE ESTADÍSTICAS MEDIAS Y VARIANZAS SEGÚN EL NÚMERO DE MEZCLAS 
+
+
+## Interleaved
+
+GRAFICA DE ESTADÍSTICAS MEDIAS Y VARIANZAS SEGÚN EL NÚMERO DE MEZCLAS 
+
+
 ## Basic experiments on Magic Decks
 
 The first experiment will consist on generating decks with one two and three colors, and get a first taste of how often a hand is really bad. To this extent, we generate the three decks and shuffle them using a random shuffle, and then draw 1000 hands from the decks, shuffling each time we draw a hand.
