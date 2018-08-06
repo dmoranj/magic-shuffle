@@ -2,28 +2,32 @@ shuffleRandom <- function(deck) {
   sample(deck)
 }
 
-simpleRandomCuts <- function(min=20, max=40) {
-  function (deck) {
-    n <- round(runif(1)*(max - min))
-    result <- deck
-    
-    for(i in 1:n) {
-      points <- sort(ceiling(runif(2)*(max - min)))
-      firstHalf <- result[points[1]:points[2]]
-      secondHalf <- result[-(points[1]:points[2])]
-      
-      if (i %% 2 == 0) {
-        result <- c(firstHalf, secondHalf)
-      } else {
-        result <- c(secondHalf, firstHalf)
-      }
-    }
-    
-    result
+reorderBlocks <- function(i, firstHalf, secondHalf) {
+  if (i %% 2 == 0) {
+    result <- c(firstHalf, secondHalf)
+  } else {
+    result <- c(secondHalf, firstHalf)
   }
+  
+  result
 }
 
-interleaved <- function(minCards=20, maxCards=40) {
+interleaveBlock <- function(i, firstHalf, secondHalf) {
+  separations <- rgeom(length(firstHalf), 0.4)
+  result <- c()
+  lastIndex <- 1
+  
+  for (j in 1:length(firstHalf)) {
+    newIndex <- lastIndex + separations[j]
+    result <- c(result, firstHalf[[j]], secondHalf[lastIndex:newIndex])
+    lastIndex <- newIndex + 1
+  }
+  
+  result <- na.omit(result)
+  result
+}
+
+middleShuffle <- function(shuffleFn, minCards=20, maxCards=40) {
   function (deck, n = 40) {
     result <- deck
     
@@ -31,22 +35,21 @@ interleaved <- function(minCards=20, maxCards=40) {
       points <- sort(ceiling(runif(2, -5, 5))) + c(minCards, maxCards)
       firstHalf <- result[points[1]:points[2]]
       secondHalf <- result[-(points[1]:points[2])]
-      separations <- rgeom(length(firstHalf), 0.4)
-      result <- c()
-      lastIndex <- 1
       
-      for (j in 1:length(firstHalf)) {
-        newIndex <- lastIndex + separations[j]
-        result <- c(result, firstHalf[[j]], secondHalf[lastIndex:newIndex])
-        lastIndex <- newIndex + 1
-      }
-      
-      result <- na.omit(result)
+      result <- shuffleFn(i, firstHalf, secondHalf)
     }
     
     attributes(result) <- NULL
     result
-  }
+  }  
+}
+
+simpleRandomCuts <- function(minCards=20, maxCards=40) {
+  middleShuffle(reorderBlocks, minCards, maxCards)
+}
+
+interleaved <- function(minCards=20, maxCards=40) {
+  middleShuffle(interleaveBlock, minCards, maxCards)
 }
 
 prepareDeck <- function(deck) {

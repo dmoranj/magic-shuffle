@@ -46,8 +46,10 @@ decks <- list(deck1 = generateBasicDeck(c(1), 10:19),
 
 shuffles <- list(random = shuffleRandom,
                  randomCuts = simpleRandomCuts(),
-                 randomPrepaired = prepareShuffle(shuffleRandom),
-                 randomCutsPrepaired = prepareShuffle(simpleRandomCuts()))
+                 interleaved = interleaved(),
+                 random_prepaired = prepareShuffle(shuffleRandom),
+                 randomCuts_prepaired = prepareShuffle(simpleRandomCuts()),
+                 interleaved_prepaired = prepareShuffle(interleaved()))
 
 globalHands <- data.frame()
 
@@ -64,7 +66,7 @@ for (name in names(decks)) {
 ```
 
 
-```{r, fig.height=8, fig.width=10}
+```{r, fig.height=10, fig.width=12}
 globalHands %>%
   gather(feature, value, -deck, -shuffle) %>%
   ggplot(aes(x = value, group = shuffle, fill = shuffle)) +
